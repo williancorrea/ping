@@ -13,6 +13,7 @@ public class Ping {
     @Data
     static class Sites {
         private String host;
+        private int porta;
         private boolean acessivel;
     }
 }
