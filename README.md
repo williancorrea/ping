@@ -1,12 +1,14 @@
 # Ping
 Fica pingando um IP na rede
 
+#
 #### Pendências
--[ ] Implementar retorno do ping em pacote (Tudo de uma vez)
--[ ] Implementar o controle da variavel 'acessivel' vinda no corpo da requisição
--[ ] Impletantar o ping de um ip e receber via get
--[ ] Implementar controle de segurança no redebimento dos dados do usuario para não fazer DDoS na rede
--[ ] Fazer Controle de ping do mesmo ip e porta
+- Implementar retorno do ping em pacote (Tudo de uma vez)
+- Implementar o controle da variavel 'acessivel' vinda no corpo da requisição
+- Impletantar o ping de um ip e receber via get
+- Implementar controle de segurança no redebimento dos dados do usuario para não fazer DDoS na rede
+- Fazer Controle de ping do mesmo ip e porta
+
 #
 ### Possíveis regras de negócio
 - Os serviços da API serão autenticados ou publicos?
