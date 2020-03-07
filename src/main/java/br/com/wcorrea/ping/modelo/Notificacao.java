@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Notificacao {
-    private String url;
+    private String endereco;
     private int porta;
     private boolean acessivel;
 }

@@ -3,7 +3,6 @@ package br.com.wcorrea.ping;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -12,7 +11,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 import java.io.IOException;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -25,7 +23,7 @@ import java.net.Socket;
 @Data
 public class PingService extends Thread {
 
-    private String site;
+    private String url;
     private Integer porta;
     private boolean acessivel;
     private String endpoint;
@@ -33,8 +31,8 @@ public class PingService extends Thread {
 
     //TODO: VERIFICAR COMO FAZER O RETORNO EM LOT
 
-    public PingService(String site, int porta, boolean acessivel, String endpoint) {
-        this.site = site;
+    public PingService(String url, int porta, boolean acessivel, String endpoint) {
+        this.url = url;
         this.endpoint = endpoint;
         this.acessivel = acessivel;
         this.porta = porta;
@@ -46,9 +44,9 @@ public class PingService extends Thread {
         super.run();
 
         if(porta == 0){
-            ping(site, endpoint);
+            ping(url, endpoint);
         }else{
-            ping(site, (porta > 0) ? porta : 80, 3000, endpoint);
+            ping(url, (porta > 0) ? porta : 80, 3000, endpoint);
         }
     }
 
@@ -58,7 +56,7 @@ public class PingService extends Thread {
             public void run() {
 //                log.info("Notificacao - Inicio - URL: {}:{} - Endpoint: {}", url, porta, endpoint);
                 JSONObject json = new JSONObject();
-                json.put("url", url);
+                json.put("endereco", url);
                 json.put("porta", porta);
                 json.put("acessivel", acessivel);
 
@@ -78,29 +76,29 @@ public class PingService extends Thread {
         t.start();
     }
 
-    private static void ping(String host, String endpoint) {
+    private static void ping(String url, String endpoint) {
         InetAddress addr;
         boolean acessivel = false;
         try {
-            addr = InetAddress.getByName(host);
+            addr = InetAddress.getByName(url);
             acessivel = addr.isReachable(3000);
-            notificador(host, 0, acessivel, endpoint);
+            notificador(url, 0, acessivel, endpoint);
         } catch (Exception e) {
 //            e.printStackTrace();
-            notificador(host, 0, false, endpoint);
+            notificador(url, 0, false, endpoint);
         }
     }
 
-    private static void ping(String address, int porta, int timeout, String endpoint) {
+    private static void ping(String url, int porta, int timeout, String endpoint) {
         try {
             try (Socket s = new Socket()) {
-                s.connect(new InetSocketAddress(address, porta), timeout);
+                s.connect(new InetSocketAddress(url, porta), timeout);
             }
-//            log.info("Conexao bem sucedida no endereco {}:{}", address, porta);
-            notificador(address, porta, true, endpoint);
+//            log.info("Conexao bem sucedida no endereco {}:{}", url, porta);
+            notificador(url, porta, true, endpoint);
         } catch (IOException exception) {
-//            log.error("Conexao mal sucedida no endereco {}:{}", address, porta);
-            notificador(address, porta, false, endpoint);
+//            log.error("Conexao mal sucedida no endereco {}:{}", url, porta);
+            notificador(url, porta, false, endpoint);
         }
     }
 }

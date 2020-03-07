@@ -19,7 +19,7 @@ public class PingResource {
 
         log.info("Iniciando manipulacao dos enderecos: {}", ping);
         for (Ping.Sites s : ping.getSites()) {
-            new PingService(s.getHost(), s.getPorta(), s.isAcessivel(), ping.getEndpoint()).start();
+            new PingService(s.getEndereco(), s.getPorta(), s.isAcessivel(), ping.getEndpoint()).start();
         }
         return ResponseEntity.status(HttpStatus.CREATED).body("");
     }
@@ -27,6 +27,6 @@ public class PingResource {
     @PostMapping("/notificacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void notificacao(@RequestBody Notificacao notificacao, boolean acessivel) {
-        System.out.println("URL: " + notificacao.getUrl() + "   Porta: " + notificacao.getPorta() + "   Acessível: " + notificacao.isAcessivel());
+        System.out.println("Endereco: " + notificacao.getEndereco() + "   Porta: " + notificacao.getPorta() + "   Acessível: " + notificacao.isAcessivel());
     }
 }
